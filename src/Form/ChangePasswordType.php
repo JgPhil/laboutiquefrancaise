@@ -4,47 +4,37 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class RegisterType extends AbstractType
+class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, [
-                'label' => 'Prénom',
-                'attr' => [
-                    'placeholder' => 'Merci de saisir votre prenom'
-                ]
-            ])
-            ->add('lastname', TextType::class, [
-                'label' => 'Nom',
-                'attr' => [
-                    'placeholder' => 'Merci de saisir votre nom'
-                ]
-            ])
-            ->add('email', EmailType::class, [
-                'label' => 'Email',
-                'attr' => [
-                    'placeholder' => 'Merci de saisir votre adresse email'
-                ]
-
-            ])
+        ->add('old_password', PasswordType::class, [
+            'label' => 'Mot de passe actuel',
+            'required' => true,
+            'mapped' => false,
+            'attr' => [
+                'placeholder' => 'Veuillez entrer votre mot de passe actuel'
+            ]
+        ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe et la confimation doivent être identique',
                 'label' => 'Mot de passe',
+                'mapped' => false,
                 'required' => true,
                 'first_options' => [
-                    'label' => 'Mot de passe',
+                    'label' => ' Nouveau mot de passe',
                     'attr' => [
-                        'placeholder' => 'Entrez votre mot de passe'
+                        'placeholder' => 'Entrez votre nouveau mot de passe'
                     ]
                 ],
                 'second_options' => [
