@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Classes\Cart;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CartController extends AbstractController
 {
@@ -21,8 +22,9 @@ class CartController extends AbstractController
      */
     public function index(): Response
     {
-        dd($this->cart->getCart());
-        return $this->render('cart/index.html.twig', []);
+        return $this->render('cart/index.html.twig', [
+            'hydratedCartWithProducts' => $this->hydratedCartWithProducts($this->cart->getCart())
+        ]);
     }
 
     /**
@@ -42,5 +44,16 @@ class CartController extends AbstractController
     {
         $this->cart->remove();
         return $this->redirectToRoute('products');
+    }
+
+    private function hydratedCartWithProducts(array $cart): array{
+        $hydratedCartWithProducts = [];
+        foreach ($cart as $id => $quantity) {
+            $hydratedCartWithProducts[] = [
+                'product' => $this->getDoctrine()->getRepository(Product::class)->find($id),
+                'quantity' => $quantity
+            ];
+        }
+        return $hydratedCartWithProducts;
     }
 }

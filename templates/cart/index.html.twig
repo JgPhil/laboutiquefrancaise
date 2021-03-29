@@ -1,7 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!
+{% block title %}Mon panier - La Boutique Française
 {% endblock %}
 
 {% block content %}
+	<h1>Mon panier</h1>
+	Retrouvez l'ensemble des produits que vous avez ajouté au panier
+	<table class="table mt-3">
+		<thead>
+			<tr>
+				<th scope="col">Produit</th>
+				<td scope="col"></td>
+				<th scope="col">Quantité</th>
+				<th scope="col">Prix</th>
+				<th scope="col">Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% set total = 0 %}
+            {% set quantity = 0 %}
+			{% for product in hydratedCartWithProducts %}
+                {% set productPrice =  (product.product.price / 100) %}
+				{% set productTotal = productPrice * product.quantity %}
+                {% set total =  total +  productTotal %}
+                {% set quantity =  quantity +  product.quantity %}
+				<tr>
+					<th><img height="70px" src="/uploads/products/{{product.product.illustration}}" alt="{{ product.product.name }}"></th>
+					<td>{{ product.product.name }}<br>
+						<small>{{ product.product.subtitle }}</small>
+					</td>
+					<td>x{{ product.quantity }}</td>
+					<td>{{ productPrice| number_format(2, ',', '.') }}€</td>
+					<td>{{ productTotal| number_format(2, ',', '.') }}€</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="text-right mb-5">
+		<b>Nombre de produits</b>
+		{{ quantity }}<br>
+		<b>{{ total }}€</b>
+		<a href="" class="btn btn-success btn-block mt-3">Valider mon panier</a>
+	</div>
+
 {% endblock %}
