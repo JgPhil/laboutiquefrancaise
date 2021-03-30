@@ -1,0 +1,43 @@
+.adress_row_custom {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.adress_col_custom {
+  position: relative;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.card_custom {
+  position: relative;
+  display: flex;
+  width: 18rem;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.adress_body {
+  word-wrap: break-word;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.adress_title {
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .adress_col_custom {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}

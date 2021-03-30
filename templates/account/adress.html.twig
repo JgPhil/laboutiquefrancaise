@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes adresses - La boutique Française
+{% endblock %}
+
+{% block head %}
+	<link rel="stylesheet" href="{{asset('assets/css/adress.css')}}">
+{% endblock %}
+
+{% block content %}
+	{% if app.user.adresses|length > 0 %}
+		<a href="{{ path('account') }}">Retour au compte</a>
+		<br>
+		<a class="btn btn-info btn-sm float-right" href="{{path('account_adress_add')}}">Ajouter une adresse</a>
+		<h1>Mes adresses</h1>
+
+		<div class="adress_row_custom">
+			{% for adress in app.user.adresses %}
+				<div class="adress_col_custom">
+					<div class="card_custom">
+						<div class="adress_body">
+							<h5 class="adress_title">{{adress.name}}</h5>
+							<p class="adress_text">
+								{{adress.adress}},
+								<br>
+								{{adress.postal}},
+								<br>
+								{{adress.city}},
+								<br>
+								{{adress.country}}
+								<br>
+							</p>
+							<a href="{{ path('account_adress_edit', {'id': adress.id}) }}">Modifier</a>
+							|
+							<a href="{{ path('account_adress_delete', {'id': adress.id}) }}">Supprimer</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<hr>
+	{% else %}
+		<p class="text-center">
+			Vous n'avez pas encore ajouté d'adresse. Pour en ajouter une,
+			<a class="btn btn-info btn-sm float-right" href="{{path('account_adress_add')}}">Ajouter une adresse</a>
+		</p>
+	{% endif %}
+{% endblock %}
