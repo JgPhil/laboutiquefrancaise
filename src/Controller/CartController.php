@@ -23,7 +23,7 @@ class CartController extends AbstractController
     public function index(): Response
     {
         return $this->render('cart/index.html.twig', [
-            'hydratedCartWithProducts' => $this->hydratedCartWithProducts($this->cart->getCart())
+            'hydratedCartWithProducts' => $this->cart->hydratedCartWithProducts($this->cart->getCart())
         ]);
     }
 
@@ -36,6 +36,26 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart');
     }
 
+    /**
+     *
+     * @Route("/cart/decrease/{id}", name="decrease")
+     */
+    public function decrease($id): Response
+    {
+        $this->cart->decrease($id);
+        return $this->redirectToRoute('cart');
+    }
+
+    /**
+     *
+     * @Route("/cart/remove/{id}", name="remove_product")
+     */
+    public function removeProduct($id): Response
+    {
+        $this->cart->removeProduct($id);
+        return $this->redirectToRoute('cart');
+    }
+
 
     /**
      * @Route("/cart/remove", name="remove_my_cart")
@@ -44,16 +64,5 @@ class CartController extends AbstractController
     {
         $this->cart->remove();
         return $this->redirectToRoute('products');
-    }
-
-    private function hydratedCartWithProducts(array $cart): array{
-        $hydratedCartWithProducts = [];
-        foreach ($cart as $id => $quantity) {
-            $hydratedCartWithProducts[] = [
-                'product' => $this->getDoctrine()->getRepository(Product::class)->find($id),
-                'quantity' => $quantity
-            ];
-        }
-        return $hydratedCartWithProducts;
     }
 }

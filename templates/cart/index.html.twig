@@ -6,41 +6,64 @@
 {% block content %}
 	<h1>Mon panier</h1>
 	Retrouvez l'ensemble des produits que vous avez ajouté au panier
-	<table class="table mt-3">
-		<thead>
-			<tr>
-				<th scope="col">Produit</th>
-				<td scope="col"></td>
-				<th scope="col">Quantité</th>
-				<th scope="col">Prix</th>
-				<th scope="col">Total</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% set total = 0 %}
-            {% set quantity = 0 %}
-			{% for product in hydratedCartWithProducts %}
-                {% set productPrice =  (product.product.price / 100) %}
-				{% set productTotal = productPrice * product.quantity %}
-                {% set total =  total +  productTotal %}
-                {% set quantity =  quantity +  product.quantity %}
+
+	{% if hydratedCartWithProducts|length > 0 %}
+
+		<table class="table mt-3">
+			<thead>
 				<tr>
-					<th><img height="70px" src="/uploads/products/{{product.product.illustration}}" alt="{{ product.product.name }}"></th>
-					<td>{{ product.product.name }}<br>
-						<small>{{ product.product.subtitle }}</small>
-					</td>
-					<td>x{{ product.quantity }}</td>
-					<td>{{ productPrice| number_format(2, ',', '.') }}€</td>
-					<td>{{ productTotal| number_format(2, ',', '.') }}€</td>
+					<th scope="col">Produit</th>
+					<td scope="col"></td>
+					<th scope="col">Quantité</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Total</th>
+					<th></th>
 				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<div class="text-right mb-5">
-		<b>Nombre de produits</b>
-		{{ quantity }}<br>
-		<b>{{ total }}€</b>
-		<a href="" class="btn btn-success btn-block mt-3">Valider mon panier</a>
-	</div>
+			</thead>
+			<tbody>
+				{% set total = 0 %}
+				{% set quantity = 0 %}
+				{% for product in hydratedCartWithProducts %}
+					{% set productPrice =  (product.product.price / 100) %}
+					{% set productTotal = productPrice * product.quantity %}
+					{% set total =  total +  productTotal %}
+					{% set quantity =  quantity +  product.quantity %}
+					<tr>
+						<th><img height="70px" src="/uploads/products/{{product.product.illustration}}" alt="{{ product.product.name }}"></th>
+						<td>{{ product.product.name }}<br>
+							<small>{{ product.product.subtitle }}</small>
+						</td>
+						<td>
+							<span>
+								<a class="cart_quantity_btn" href="{{ path('decrease', {'id' : product.product.id}) }}"><img height="9px" src="{{ asset('assets/img/minus.png') }}" alt="minus"></a>
+								{{ product.quantity }}
+								<a class="cart_quantity_btn" href="{{path('add_to_cart', {'id' : product.product.id})}}"><img height="9px" src="{{ asset('assets/img/add.png') }}" alt="add"></a>
+							</span>
+						</td>
+						<td>{{ productPrice| number_format(2, ',', '.') }}€</td>
+						<td>{{ productTotal| number_format(2, ',', '.') }}€</td>
+						<td>
+							<a href="{{path('remove_product', {'id': product.product.id})}}">
+								<img height="15px" src="{{ asset('assets/img/trash.png') }}" alt="minus">
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-right mb-5">
+			<b>Nombre de produits:
+				{{ quantity }}
+			</b>
+			<br>
+			<b>Total:
+				{{ total }}€
+			</b>
+			<a href="" class="btn btn-success btn-block mt-3">Valider mon panier</a>
+		</div>
+		{% else %}
+		<hr>
+		<b>Votre panier est vide :-(</b>
+	{% endif %}
 
 {% endblock %}
