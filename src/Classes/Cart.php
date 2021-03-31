@@ -60,12 +60,12 @@ class Cart
         return $this->session->get('cart');
     }
 
-    public function hydratedCartWithProducts(?array $cart): array
+    public function hydratedCartWithProducts(): array
     {
         $hydratedCartWithProducts = [];
         
         if ($this->getCart()) {
-            foreach ($cart as $id => $quantity) {
+            foreach ($this->getCart() as $id => $quantity) {
 
                 $productObject = $this->productRepository->find($id);
 

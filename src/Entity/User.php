@@ -163,6 +163,12 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    public function getFullname(): ?string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -179,6 +185,7 @@ class User implements UserInterface
     {
         return $this->lastname;
     }
+
 
     public function setLastname(string $lastname): self
     {
