@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use SessionIdInterface;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -47,7 +48,7 @@ class Order
     private $delivery;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderDetails::class, mappedBy="myOrder")
+     * @ORM\OneToMany(targetEntity=OrderDetails::class, mappedBy="myOrder", cascade={"remove"})
      */
     private $orderDetails;
 
@@ -56,25 +57,43 @@ class Order
      */
     private $isPaid;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $reference;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $stripeSessionId;
+
+
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
     }
 
-    public function getTotal() : int
+    public function getTotal(): int
     {
         $details = $this->getOrderDetails()->getValues();
         $total = 0;
-        foreach($details as $product)
-        {
+        foreach ($details as $product) {
             $total += $product->getTotal();
         }
         return $total;
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getUser(): ?User
@@ -175,6 +194,30 @@ class Order
     public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): self
+    {
+        $this->stripeSessionId = $stripeSessionId;
 
         return $this;
     }

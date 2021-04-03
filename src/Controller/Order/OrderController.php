@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Order;
 
 use App\Classes\Cart;
 use App\Entity\Order;
@@ -68,9 +68,14 @@ class OrderController extends AbstractController
             $deliveryContent .= '<br>' . $delivery->getCountry();
 
             $order = new Order;
+            $date = new DateTime();
+
+            $reference = $date->format('dmY') . '-' . uniqid();
+
             $order
+                ->setReference($reference)
                 ->setUser($this->getUser())
-                ->setCreatedAt(new DateTime())
+                ->setCreatedAt($date)
                 ->setCarrierName($carrier->getName())
                 ->setCarrierPrice($carrier->getPrice())
                 ->setDelivery($deliveryContent)
@@ -89,11 +94,14 @@ class OrderController extends AbstractController
 
                 $this->entityManager->persist($orderDetails);
             }
-
+            
             $this->entityManager->flush();
+
+
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->hydratedCartWithProducts(),
-                'order' => $order
+                'order' => $order,
+                'reference' => $order->getReference()
             ]);
         }
         return $this->redirectToRoute('cart');

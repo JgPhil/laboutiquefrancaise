@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes - La boutique Française
+{% endblock %}
+
+
+{% block content %}
+	{% if orders|length > 0 %}
+		<a href="{{ path('account') }}">Retour au compte</a>
+		<br>
+		<h1>Mes commandes</h1>
+		<table class="table mt-4">
+			<thead>
+				<tr>
+					<th scope="col">Référence</th>
+					<th scope="col">Passée le</th>
+					<th scope="col">Produits</th>
+					<th scope="col">Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in orders %}
+					<tr>
+						<td class="badge badge-secondary">{{order.reference}}</td>
+						<td>{{order.createdAt|date('d/m/Y')}}</td>
+						<td>{{order.orderDetails|length}}</td>
+						<td>{{((order.getTotal + order.carrierPrice) / 100)|number_format(2, ',', '.')}}€</td>
+						<td><a class="text-right" href=""> Voir ma commande</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+		<hr>
+	{% else %}
+		<p class="text-center">
+			Vous n'avez pas encore passé de commande sur La Boutique Française.
+		</p>
+	{% endif %}
+{% endblock %}
