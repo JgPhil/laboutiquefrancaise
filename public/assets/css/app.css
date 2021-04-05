@@ -84,3 +84,13 @@ span.product-page-price {
   padding: 20px;
   margin-top: 22px;
 }
+
+.carousel-inner::after {
+  background-image: linear-gradient(15deg, black 6%, transparent 70%);
+  bottom: 0;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
