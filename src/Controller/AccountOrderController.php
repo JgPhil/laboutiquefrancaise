@@ -14,6 +14,11 @@ class AccountOrderController extends AbstractController
 {
 
     private $entityManager;
+    private $ORDER_STATE = [
+        0 => 'Non Payée',
+        1 => 'En cours de préparation',
+        2 =>  'En cours de livraison'
+    ];
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -27,7 +32,8 @@ class AccountOrderController extends AbstractController
     {
         $orders = $this->entityManager->getRepository(Order::class)->findSuccessOrders($this->getUser());
         return $this->render('account/order.html.twig', [
-            'orders' => $orders
+            'orders' => $orders,
+            'orderState' => $this->ORDER_STATE
         ]);
     }
 
@@ -42,7 +48,8 @@ class AccountOrderController extends AbstractController
         }
 
         return $this->render('account/show.html.twig', [
-            'order' => $order
+            'order' => $order,
+            'orderState' => $this->ORDER_STATE
         ]);
     }
 }

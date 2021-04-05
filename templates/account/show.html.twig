@@ -10,6 +10,9 @@
 	<b>Commande passée le:</b>
 	{{order.createdAt|date('d/m/Y')}}
 	<br>
+	<strong>Statut de la commande:</strong>
+	{{orderState[order.state]}}<br>
+
 	<b>Référence de ma commande:</b>
 	<small>{{order.reference}}</small><br>
 	<b>Transporteur choisi:</b>

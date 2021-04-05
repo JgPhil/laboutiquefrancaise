@@ -3,6 +3,7 @@
 namespace App\Controller\Order;
 
 use App\Classes\Cart;
+use App\Classes\Mail;
 use App\Entity\Order;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,20 +15,21 @@ class OrderSuccessController extends OrderResponseController
      * @Route("/commande/merci/{stripeSessionId}", name="order_validate")
      */
     public function index(Cart $cart, $stripeSessionId): Response
-    {        
+    {
         $order = $this->getOrder($stripeSessionId);
 
         if (!$order || $order->getUser() != $this->getUser()) {
             return $this->redirectToRoute('home');
         }
 
-        if (!$order->getIsPaid()) {
+        if (!$order->getState() == 0) {
             $cart->remove();
-            //TODO modifier statut commande
-            $order->setIsPaid(true);
+            $order->setState(1);
             $this->entityManager->flush();
-            // TODO Envoyer mail confirmation commande
-
+            
+            $mail = new Mail();
+            $content = "Bonjour " . $order->getUser()->getFirstname() . "<br>Merci pour votre commande<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas deserunt sit cumque itaque delectus magni excepturi, impedit eos? Dicta odio at dolor quidem enim sit est corrupti dolore qui deserunt!";
+            $mail->send($order->getUser()->getEmail(), $order->getUser()->getFirstname(), "Votre commande La Boutique Française est bien validée", $content);
         }
 
 
