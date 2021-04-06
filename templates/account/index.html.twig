@@ -2,18 +2,40 @@
 
 {% block title %}Mon compte - La boutique Française
 {% endblock %}
+{% block head %}<link href="{{ asset('assets/css/account.css') }}" rel="stylesheet"> {% endblock %}
 
 {% block content %}
 	<h1>Mon compte</h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<small>
+			<a href="/admin">Vous ếtes administrateur, accédez au backoffice ?</a>
+		</small>
+		<br>
+	{% endif %}
+
 	Bienvenue dans votre compte
 	<strong>{{ app.user.firstname }}</strong>
 	Cest ici que vous allez pouvoir gérer toutes vos informations personneles.
 	<hr>
-	{% if is_granted('ROLE_ADMIN') %}
-		<a href="/admin">Vous ếtes administrateur, accédez au backoffice ?</a><br>
-	{% endif %}
-	<a href="{{ path('account_password') }}">Modifier mon mot de passe</a><br>
-	<a href="{{ path('account_adress') }}">Voir mes adresses</a><br>
-	<a href="{{ path('account_order') }}">Voir mes commandes</a>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="account-item text-center mx-auto">
+			<img src="{{asset('assets/img/lock.png')}}" alt="modifier mot de passe">
+				<a href="{{ path('account_password') }}">Modifier mon mot de passe</a>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="account-item text-center mx-auto">
+			<img src="{{asset('assets/img/adress.png')}}" alt="voir mes adresses">
+				<a href="{{ path('account_adress') }}">Voir mes adresses</a>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="account-item text-center mx-auto">
+			<img src="{{asset('assets/img/order.png')}}" alt="voir mes commandes">
+				<a href="{{ path('account_order') }}">Voir mes commandes</a>
+			</div>
+		</div>
+	</div>
 	<hr>
 {% endblock %}
