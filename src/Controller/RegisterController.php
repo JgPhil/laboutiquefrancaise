@@ -46,7 +46,7 @@ class RegisterController extends AbstractController
                 $content = "Bonjour ". $user->getFirstname()."<br>Bienvenue sur la première boutique Made in France<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas deserunt sit cumque itaque delectus magni excepturi, impedit eos? Dicta odio at dolor quidem enim sit est corrupti dolore qui deserunt!";
                 $mail->send($user->getEmail(), $user->getFirstname(), "Bienvenue sur La Boutique Française", $content);
                 
-                $notification = "Votre insription s'erst bien déroulée, merci de valider le lien présent dans l'email qui vous aété envoyé";
+                $notification = "Votre insription s'erst bien déroulée, merci de valider le lien présent dans l'email qui vous a été envoyé";
             } else {
                 $notification = "L'email que vous avez renseigné existe déja";
             }
