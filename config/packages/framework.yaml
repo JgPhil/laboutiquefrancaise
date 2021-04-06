@@ -15,8 +15,3 @@ framework:
     #fragments: true
     php_errors:
         log: true
-
-parameters:
-    #Mailjet
-    API_KEY: '%env(string:API_KEY)%'
-    API_KEY_SECRET: '%env(string:API_KEY_SECRET)%'
