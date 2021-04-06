@@ -26,10 +26,6 @@ class HomeController extends AbstractController
      */
     public function index(ProductRepository $productRepository): Response
     {
-        $mail = new Mail();
-                $content = "test";
-                $mail->send('filtre67@gmail.com', 'toto', "Bienvenue sur La Boutique Française", $content);
-                
         return $this->render('home/index.html.twig', [
             'products' => $this->entityManager->getRepository(Product::class)->findByIsBest(1),
             'headers' =>  $this->entityManager->getRepository(Header::class)->findAll()
