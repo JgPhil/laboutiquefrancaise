@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Classes\Mail;
+
 use App\Entity\Header;
 use App\Entity\Product;
 use App\Repository\ProductRepository;

@@ -3,8 +3,7 @@
 namespace App\Controller\Order;
 
 use App\Classes\Cart;
-use App\Classes\Mail;
-use App\Entity\Order;
+use App\Classes\Mail\AppMailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Order\OrderResponseController;
@@ -14,7 +13,7 @@ class OrderSuccessController extends OrderResponseController
     /**
      * @Route("/commande/merci/{stripeSessionId}", name="order_validate")
      */
-    public function index(Cart $cart, $stripeSessionId): Response
+    public function index(AppMailerInterface $mailer, Cart $cart, $stripeSessionId): Response
     {
         $order = $this->getOrder($stripeSessionId);
 
@@ -27,9 +26,9 @@ class OrderSuccessController extends OrderResponseController
             $order->setState(1);
             $this->entityManager->flush();
             
-            $mail = new Mail();
+            
             $content = "Bonjour " . $order->getUser()->getFirstname() . "<br>Merci pour votre commande<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas deserunt sit cumque itaque delectus magni excepturi, impedit eos? Dicta odio at dolor quidem enim sit est corrupti dolore qui deserunt!";
-            $mail->send($order->getUser()->getEmail(), $order->getUser()->getFirstname(), "Votre commande La Boutique Française est bien validée", $content);
+            $mailer->send($order->getUser()->getEmail(), $order->getUser()->getFirstname(), "Votre commande La Boutique Française est bien validée", $content);
         }
 
 

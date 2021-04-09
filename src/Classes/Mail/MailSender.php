@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Classes;
+namespace App\Classes\Mail;
+
 
 use Mailjet\Client;
 use Mailjet\Resources;
 use Symfony\Component\Dotenv\Dotenv;
+use App\Classes\Mail\AppMailerInterface;
 
-class Mail
+class MailSender implements AppMailerInterface
 {
-    private $dotenv;
-
     public function __construct()
     {
-        $this->dotenv = (new Dotenv())->load(dirname(__DIR__, 2) . '/.env.local');
+        $path = dirname(__DIR__, 3) . '/.env.local';
+        (new Dotenv())->load($path);
     }
 
 
@@ -23,7 +24,7 @@ class Mail
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => "jamingph@gmail.com",
+                        'Email' => $_ENV['ADMIN_EMAIL'],
                         'Name' => "La Boutique Française"
                     ],
                     'To' => [

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Classes\Mail;
+use App\Classes\Mail\AppMailerInterface;
 use App\Entity\ResetPassword;
 use App\Entity\User;
 use App\Form\ResetPasswordType;
@@ -26,7 +26,7 @@ class ResetPasswordController extends AbstractController
     /**
      * @Route("/mot-de-passe-oublie", name="reset_password")
      */
-    public function index(Request $request): Response
+    public function index(AppMailerInterface $mailer, Request $request): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('home');
@@ -50,8 +50,8 @@ class ResetPasswordController extends AbstractController
             $url = $this->generateUrl('update_password', ['token' => $resetPassword->getToken()]);
             $content = 'Bonjour ' . $user->getFirstName() . '<br>Vous avez demandé à réinitialiser votre mot de passe sur LA Boutique Française<br><hr>';
             $content .= 'Merci de bien vouloir cliquer sur le lien suivant pour <a href="' . $url . '">mettre à jour votre mot de passe</a>';
-            $mail = new Mail();
-            $mail->send($user->getEmail(), $user->getFirstName(), 'Réinitialiser votre mot de passe sur La Boutique Française', $content);
+    
+            $mailer->send($user->getEmail(), $user->getFirstName(), 'Réinitialiser votre mot de passe sur La Boutique Française', $content);
             $this->addFlash('notice', 'Vous allez recevoir un email avec la procédure de reset du mot de passe');
         }
         return $this->render('security/reset_password.html.twig', []);

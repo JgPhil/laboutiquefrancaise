@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Classes\Mail;
+use App\Classes\Mail\AppMailerInterface;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +24,7 @@ class RegisterController extends AbstractController
     /**
      * @Route("/inscription", name="register")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function index(AppMailerInterface $mailer, Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $notification = null;
         $user = new User();
@@ -40,11 +40,10 @@ class RegisterController extends AbstractController
                 $user->setPassword($password);
 
                 $this->entityManager->persist($user);
-                $this->entityManager->flush();
+                //$this->entityManager->flush();
 
-                $mail = new Mail();
                 $content = "Bonjour ". $user->getFirstname()."<br>Bienvenue sur la première boutique Made in France<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas deserunt sit cumque itaque delectus magni excepturi, impedit eos? Dicta odio at dolor quidem enim sit est corrupti dolore qui deserunt!";
-                $mail->send($user->getEmail(), $user->getFirstname(), "Bienvenue sur La Boutique Française", $content);
+                $mailer->send($user->getEmail(), $user->getFirstname(), "Bienvenue sur La Boutique Française", $content);
                 
                 $notification = "Votre insription s'erst bien déroulée, merci de valider le lien présent dans l'email qui vous a été envoyé";
             } else {
